@@ -1,0 +1,34 @@
+Package: BiocIO
+Title: Standard Input and Output for Bioconductor Packages
+Version: 0.0.1
+Authors@R: c(
+    person("Martin", "Morgan", role = "aut", comment = c(ORCID = "YOUR-ORCID-ID")),
+    person("Daniel", "van Twisk", role = "aut"),
+    person(
+        family = "Bioconductor Package Maintainer",
+        role = "cre",
+        email = "maintainer@bioconductor.org"
+    ))
+Description: Implements `import()` and `export()` standard generics
+    for importing and exporting biological data formats. `import()`
+    supports whole-file as well as chunk-wise iterative import. The
+    `import()` interface optionally provides a standard mechanism for
+    'lazy' access via `filter()` (on row or element-like components of
+    the file resource), `select()` (on column-like components of the
+    file resource) and `collect()`. The `import()` interface
+    optionally provides transparent access to remote (e.g. via https)
+    as well as local access. Developers can register a file extension,
+    e.g., `.loom` for dispatch from character-based URIs to specific
+    `import()` / `export()` methods based on classes representing file
+    types, e.g., `LoomFile()`.
+License: Artistic-2.0
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown,
+    BiocStyle
+VignetteBuilder: knitr

@@ -1,0 +1,37 @@
+---
+title: "Vignette Title"
+author:
+- name: First Author
+  affiliation: First Author's Affiliation
+- name: Second Author
+  affiliation: Second Author's Affiliation
+  email: corresponding@author.com
+package: packageName
+output:
+  BiocStyle::html_document
+abstract: |
+  Description of your vignette
+vignette: |
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Installation
+
+# Basic use
+
+# Example use cases
+
+# For developers
+
+# Appendix
+
+## Acknowledgments
+
+
+## Session info {.unnumbered}
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```
