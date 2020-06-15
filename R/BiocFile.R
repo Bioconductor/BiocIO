@@ -1,3 +1,7 @@
+### =========================================================================
+### Import/export support
+### -------------------------------------------------------------------------
+
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ### Classes files and connections
 ###
@@ -7,9 +11,23 @@
 ### wraps a low-level representation of a file, currently either a
 ### path/URL or connection.
 
+#' @title Class for High-level File abstraction
+#'
+#' @author Michael Lawrence
+#'
+#' @description
+#'  A \code{RTLFile} object is the base class for classes representing
+#'  files accessible with rtracklayer. It wraps a resource (either a path,
+#'  URL or connection). We can represent a list of \code{RTLFile} objects
+#'  with a \code{RTLFileList}.
+#'
+#' @importMethodsFrom Rsamtools path
+#' @importFrom S4Vectors SimpleList
+#' @export
 setClass("BiocFile", representation(resource = "characterORconnection"),
          contains = "VIRTUAL")
 
+#' @export
 setClass("BiocFileList",
          prototype = prototype(elementType = "BiocFile"),
          contains = "SimpleList")

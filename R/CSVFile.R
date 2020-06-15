@@ -1,7 +1,7 @@
 ## implement import/export
 ## Define CSVFile class
 
-.CSVFile <- setClass("CSVFile", contains = "RTLFile")
+CSVFile <- setClass("CSVFile", contains = "BiocFile")
 
 CSVFile <-
     function(resource)
@@ -13,6 +13,12 @@ setMethod("import", "CSVFile",
     function(con, format, text, ...)
 {
     read.csv(resource(con), ...)
+})
+
+setMethod("export", "CSVFile",
+    function(object, con, format, ...)
+{
+    write.csv(object, resource(con), ...)
 })
 
 setGeneric(
@@ -67,4 +73,4 @@ setGeneric(
     "ifilter",
     function(con, format, text, filter) standardGeneric("iofilter")
     signature("con")
-
+)

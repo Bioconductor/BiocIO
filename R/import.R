@@ -1,8 +1,10 @@
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+### Import
+###
+
 #' @export
 setGeneric("import",
            function(con, format, text, ...) standardGeneric("import"))
-
-
 
 setMethod("import", c("connection", "character"),
           function(con, format, text, ...)

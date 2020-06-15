@@ -1,33 +1,69 @@
 ---
 title: "Vignette Title"
 author:
-- name: First Author
-  affiliation: First Author's Affiliation
-- name: Second Author
-  affiliation: Second Author's Affiliation
-  email: corresponding@author.com
-package: packageName
+- name: Daniel Van Twisk
+  affiliation: Roswell Park Comprehensive Cancer Center
+- name: Martin Morgan
+  affiliation: Roswell Park Comprehensive Cancer Center
+  email: maintainer@biocondcutor.org
+package: BiocIO
 output:
   BiocStyle::html_document
 abstract: |
-  Description of your vignette
+  BiocIO contains defintions for import and export methods used throughout
+  Biocondcutor for IO purposes. The BiocFile class which serves as an interface
+  for File classes within Bioconductor is also defined in this package. This
+  vignette will describe the functionality of these base methods and classes as
+  well as an example for developers on how to interface with them.
 vignette: |
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+# Introduction
+
 # Installation
 
+```{r installation, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install('BiocIO')
+```
+
 # Basic use
+
+## Import and Export
+The functions import and export load and save objects from and to particular
+file formats. The rtracklayer package implements support for a number of
+annotation and sequence formats.
+
+```{r basic_import}
+
+```
+
+```{r basic_export}
+
+```
+
+## The BiocFile Class
+BiocFile is a base class for high-level file abstractions, where subclasses are
+associated with a particular file format/type. It wraps a low-level
+representation of a file, currently either a path/URL or connection.
+
+```{r basic_BiocFile}
+
+```
+
+## CompressedFile
+
+```{r basic_CompressedFile}
+
+```
 
 # Example use cases
 
 # For developers
-
-# Appendix
-
-## Acknowledgments
 
 
 ## Session info {.unnumbered}
