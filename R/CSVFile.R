@@ -11,14 +11,14 @@ CSVFile <-
 }
 
 #' @export
-setMethod("import", "CSVFile",
+setMethod("import", c(con = "CSVFile"),
     function(con, format, text, ...)
 {
     read.csv(resource(con), ...)
 })
 
 #' @export
-setMethod("export", "CSVFile",
+setMethod("export", c(object = "data.frame", con = "CSVFile"),
     function(object, con, format, ...)
 {
     write.csv(object, resource(con), ...)
@@ -26,7 +26,7 @@ setMethod("export", "CSVFile",
 
 #' @export
 setMethod("yield", "CSVFile",
-    function(con, format, text, size, ...)
+    function(con, format, text, size = -1, ...)
 {
     con <- resource(con)
     if (!is(con, "connection"))
@@ -40,7 +40,7 @@ setMethod("yield", "CSVFile",
             signalCondition(cond)
         })
     tryCatch({
-        read.csv(con, ...)
+        read.csv(con, nrows = size, ...)
     }, error = function(e) {
         cond <- simpleCondition(e)
         class(cond) <- c("EOF", class(cond))

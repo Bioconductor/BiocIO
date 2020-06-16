@@ -21,8 +21,10 @@
 #'  URL or connection). We can represent a list of \code{RTLFile} objects
 #'  with a \code{RTLFileList}.
 #'
-#' @importMethodsFrom Rsamtools path
-#' @importFrom S4Vectors SimpleList
+#' @importFrom GenomicRanges GRanges GRangesList
+#' @importFrom IRanges RleList RangesList
+#' @importFrom BiocGenerics path
+#' @importFrom S4Vectors SimpleList isSingleString
 #' @export
 setClass("BiocFile", representation(resource = "characterORconnection"),
          contains = "VIRTUAL")

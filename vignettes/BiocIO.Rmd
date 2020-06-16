@@ -99,7 +99,7 @@ setMethod("import", "CSVFile",
     read.csv(resource(con), ...)
 })
 
-setMethod("export", "CSVFile",
+setMethod("export", "data.frame", "CSVFile",
     function(object, con, format, ...)
 {
     write.csv(object, resource(con), ...)
@@ -134,6 +134,16 @@ setMethod("yield", "CSVFile",
         signalCondition(cond)
     })
 })
+```
+
+```{r demonstrateCSV}
+temp <- tempfile(fileext = ".csv")
+csv <- CSVFile(temp)
+
+export(mtcars, csv)
+df <- import(csv)
+
+yield(csv)
 ```
 
 ## Session info {.unnumbered}
