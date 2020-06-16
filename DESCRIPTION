@@ -1,6 +1,6 @@
 Package: BiocIO
 Title: Standard Input and Output for Bioconductor Packages
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(
     person("Martin", "Morgan", role = "aut", comment = c(ORCID = "YOUR-ORCID-ID")),
     person("Daniel", "Van Twisk", role = "aut"),
@@ -36,4 +36,11 @@ Suggests:
     knitr,
     rmarkdown,
     BiocStyle
+Collate:
+    export.R
+    import.R
+    yield.R
+    BiocFile.R
+    compression.R
+    CSVFile.R
 VignetteBuilder: knitr

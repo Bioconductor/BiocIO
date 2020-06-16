@@ -6,7 +6,7 @@
 ### General
 ###
 
-setClass("CompressedFile", contains = c("RTLFile", "VIRTUAL"))
+setClass("CompressedFile", contains = c("BiocFile", "VIRTUAL"))
 
 setGeneric("decompress",
            function(con, ...) standardGeneric("decompress"))
