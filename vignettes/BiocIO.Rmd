@@ -113,7 +113,7 @@ For the `CSVFile` class, it is defined as rows.
 
 ```{r defineYield}
 setMethod("yield", "CSVFile",
-    function(con, format, text, size, ...)
+    function(con, format, text, size = -1, ...)
 {
     con <- resource(con)
     if (!is(con, "connection"))
@@ -127,7 +127,7 @@ setMethod("yield", "CSVFile",
             signalCondition(cond)
         })
     tryCatch({
-        read.csv(con, ...)
+        read.csv(con, nrows = size, ...)
     }, error = function(e) {
         cond <- simpleCondition(e)
         class(cond) <- c("EOF", class(cond))
@@ -145,6 +145,18 @@ df <- import(csv)
 
 yield(csv)
 ```
+
+
+```{r}
+csv %>% filter(mpg > 4.0) %>% yield(size = 10)
+
+db <- dbConnection ## CSVFile
+
+```
+
+
+
+
 
 ## Session info {.unnumbered}
 
