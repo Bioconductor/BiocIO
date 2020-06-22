@@ -11,22 +11,16 @@
 ### wraps a low-level representation of a file, currently either a
 ### path/URL or connection.
 
-#' @title Class for High-level File abstraction
-#'
-#' @author Michael Lawrence
-#'
-#' @description
-#'  A \code{RTLFile} object is the base class for classes representing
-#'  files accessible with rtracklayer. It wraps a resource (either a path,
-#'  URL or connection). We can represent a list of \code{RTLFile} objects
-#'  with a \code{RTLFileList}.
-#'
-#' @importFrom GenomicRanges GRanges GRangesList
-#' @importFrom IRanges RleList RangesList
 #' @importFrom BiocGenerics path
+#' @importFrom GenomicRanges GRanges GRangesList score strand
+#' @importFrom IRanges RleList RangesList
+#' @importFrom RCurl getURL
 #' @importFrom S4Vectors SimpleList isSingleString
+#' @importFrom XML parseURI
+#' @importFrom methods findMethods getClass getClassDef is new packageSlot
+#' @importFrom tools file_ext file_path_as_absolute file_path_sans_ext
 #' @export
-setClass("BiocFile", representation(resource = "characterORconnection"),
+setClass("BiocFile", representation(resource = "character_OR_connection"),
          contains = "VIRTUAL")
 
 #' @export

@@ -24,15 +24,16 @@ vignette: |
 # Introduction
 
 # Installation
-
 ```{r installation, eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install('BiocIO')
+BiocManager::install("BiocIO")
 ```
 
 # Introduction
-
+```{r library}
+library("BiocIO")
+```
 ## Import and Export
 The functions import and export load and save objects from and to particular
 file formats. This package contains the following generics for the import
@@ -136,6 +137,8 @@ setMethod("yield", "CSVFile",
 })
 ```
 
+And finally a demonstration of the CSVFile class and import/export methods in
+action.
 ```{r demonstrateCSV}
 temp <- tempfile(fileext = ".csv")
 csv <- CSVFile(temp)
@@ -145,17 +148,6 @@ df <- import(csv)
 
 yield(csv)
 ```
-
-
-```{r}
-csv %>% filter(mpg > 4.0) %>% yield(size = 10)
-
-db <- dbConnection ## CSVFile
-
-```
-
-
-
 
 
 ## Session info {.unnumbered}

@@ -1,6 +1,6 @@
 Package: BiocIO
 Title: Standard Input and Output for Bioconductor Packages
-Version: 0.0.5
+Version: 0.0.6
 Authors@R: c(
     person("Martin", "Morgan", role = "aut", comment = c(ORCID = "YOUR-ORCID-ID")),
     person("Daniel", "Van Twisk", role = "aut"),
@@ -32,7 +32,11 @@ Imports:
     BiocGenerics,
     GenomicRanges,
     IRanges,
-    S4Vectors
+    RCurl,
+    S4Vectors,
+    XML,
+    methods,
+    tools
 Suggests: 
     testthat,
     knitr,

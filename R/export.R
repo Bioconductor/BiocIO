@@ -2,18 +2,6 @@
 ### Export
 ###
 
-#' @title Import
-#' @description
-#'  The function \code{export} save objects from particular file formats. The
-#'  rtracklayer package implements support for a number of annotation and
-#'  sequence formats.
-#' @alias export export,ANY,connection,character-method
-#'        export,ANY,connection,missing-method
-#'        export,ANY,CompressedFile,missing-method
-#'        export,ANY,missing,character-method
-#'        export,ANY,character,missing-method
-#'        export,ANY,character,character-method
-#' @usage export(object, con, format, ...)
 #' @export
 setGeneric("export",
            function(object, con, format, ...) standardGeneric("export"))
