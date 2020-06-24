@@ -17,7 +17,7 @@
 #' @importFrom RCurl getURL
 #' @importFrom S4Vectors SimpleList isSingleString
 #' @importFrom XML parseURI
-#' @importFrom methods findMethods getClass getClassDef is new packageSlot
+#' @importFrom methods findMethods getClass getClassDef is new packageSlot show
 #' @importFrom tools file_ext file_path_as_absolute file_path_sans_ext
 #' @export
 setClass("BiocFile", representation(resource = "character_OR_connection"),
@@ -28,23 +28,36 @@ setClass("BiocFileList",
          prototype = prototype(elementType = "BiocFile"),
          contains = "SimpleList")
 
+#' @export
+BiocFileList <- function(files) {
+    new("BiocFileList", listData = files)
+}
+
+###' @export
+###setMethod("showAsCell", "BiocFileList", function(object) {
+###    showAsCell(vapply(object, path, character(1L)))
+###})
+
+#' @export
 resource <- function(x) x@resource
 
-connection <- function(x, open = "") {
-  connectionForResource(resource(x), open = open)
+#' @export
+`resource<-` <- function(x, value) {
+    x@resource <- value
+    x
 }
 
-resourceDescription <- function(x) {
-  r <- resource(x)
-  if (is(r, "connection"))
-    r <- summary(r)$description
-  r
-}
+#' @export
+setGeneric("fileFormat", function(x) NULL)
 
-fileFormat <- function(x) {
-  tolower(sub("File$", "", class(x)))
-}
+#' @export
+setMethod("fileFormat", "character", function(x) fileFormat(FileForFormat(x)))
 
+#' @export
+setMethod("fileFormat", "BiocFile", function(x)
+    tolower(sub("File$", "", class(x))))
+
+#' @export
 setMethod("path", "BiocFile", function(object) {
   r <- resource(object)
   if (!is.character(r))
@@ -52,6 +65,7 @@ setMethod("path", "BiocFile", function(object) {
   r
 })
 
+#' @export
 setMethod("show", "BiocFile", function(object) {
   r <- resource(object)
   if (!isSingleString(r))
@@ -59,6 +73,7 @@ setMethod("show", "BiocFile", function(object) {
   cat(class(object), "object\nresource:", r, "\n")
 })
 
+#' @export
 FileForFormat <- function(path, format = file_ext(path)) {
   if (!(isSingleString(path) || is(path, "connection")))
     stop("'path' must be a single string or a connection object")
@@ -97,42 +112,51 @@ FileForFormat <- function(path, format = file_ext(path)) {
   get(constructorName, ns)(path)
 }
 
+#' @export
 setMethod("as.character", "BiocFile", function(x) path(x))
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ### Utilities
 ###
 
+#' @export
 setGeneric("bestFileFormat",
-           function(x, dest, ...) standardGeneric("bestFileFormat"))
+function(x, dest, ...) standardGeneric("bestFileFormat"))
 
+#' @export
 setMethod("bestFileFormat", c("GenomicRanges", "ANY"),
-          function(x, dest) {
-            ## have numbers on a single strand, use BigWig
-            if (is.numeric(score(x)) && length(unique(strand(x))) == 1L)
-              "bw"
-            else "bed"
-          })
+function(x, dest) {
+    ## have numbers on a single strand, use BigWig
+    if (is.numeric(score(x)) && length(unique(strand(x))) == 1L)
+    "bw"
+    else "bed"
+})
 
+#' @export
 setMethod("bestFileFormat", c("GRangesList", "ANY"), function(x, dest) {
-  "bed" # need hierarchical structure
+    "bed" # need hierarchical structure
 })
 
+#' @export
 setMethod("bestFileFormat", c("RleList", "ANY"), function(x, dest) {
-  "bw" # e.g., coverage
+    "bw" # e.g., coverage
 })
 
-setMethod("bestFileFormat", c("RangesList", "ANY"), function(x, dest) {
-  "bed" # just ranges...
+#' @export
+setMethod("bestFileFormat", c("IntegerRangesList", "ANY"), function(x, dest) {
+    "bed" # just ranges...
 })
 
-## Uses XML::parseURI, except first checks for Windows drive letter.
-## There are no known URI schemes that are only a single character.
+isURL <- function(uri) {
+    if (!isSingleString(uri))
+        return(FALSE)
+    windowsDriveLetter <- .Platform$OS.type == "windows" &&
+        grepl("^[A-Za-z]:[/\\]", uri)
+    grepl("^[A-Za-z]+:", uri) && !windowsDriveLetter
+}
+
 .parseURI <- function(uri) {
-  windowsDriveLetter <- .Platform$OS.type == "windows" &&
-      grepl("^[A-Za-z]:[/\\]", uri)
-  hasScheme <- grepl("^[A-Za-z]+:", uri) && !windowsDriveLetter
-  if (!hasScheme) {
+  if (!isURL(uri)) {
     parsed <- parseURI("")
     parsed$path <- uri
   } else {
@@ -143,100 +167,44 @@ setMethod("bestFileFormat", c("RangesList", "ANY"), function(x, dest) {
   parsed
 }
 
-normURI <- function(x) {
-  if (!isSingleString(x))
-    stop("URI must be a single, non-NA string")
-  uri <- .parseURI(x)
-  if (uri$scheme == "") # /// (vs. //) needed for Windows
-    x <- paste("file:///", file_path_as_absolute(x), sep = "")
-  x
+resourceDescription <- function(x) {
+  r <- resource(x)
+  if (is(r, "connection"))
+    r <- summary(r)$description
+  r
 }
 
-createResource <- function(x, dir = FALSE, content = "") {
-  uri <- .parseURI(x)
-  if (uri$scheme == "file" || uri$scheme == "") {
-    if (!file.exists(uri$path)) {
-      if (dir)
-        dir.create(uri$path, recursive = TRUE)
-      else writeLines(content, uri$path)
-    } else warning("Path '", uri$path, "' already exists")
-  } else stop("Cannot create a resource that is not a local file")
-}
+.ConnectionManager <- setRefClass("ConnectionManager",
+                                  fields = c(connections = "list"))
 
-uriExists <- function(x) {
-  uri <- .parseURI(x)
-  if (uriIsLocal(x)) {
-    exists <- file.exists(uri$path)
-  } else {
-    txt <- getURL(x, header = TRUE)
-    exists <- grepl("^HTTP/\\d+\\.\\d+ 200 OK", txt)
-  }
-  exists
-}
+manager <- function() .ConnectionManager()
 
-uriIsLocal <- function(x) {
-  x$scheme == "file" || x$scheme == ""
-}
-
-uriIsWritable <- function(x) {
-  uri <- .parseURI(x)
-  if (uriIsLocal(uri)) {
-    !file.access(uri$path, 2) ||
-    (!file.exists(uri$path) && uriIsWritable(dirname(uri$path)))
-  } else FALSE
-}
-
-checkArgFormat <- function(con, format) {
-  if (toupper(format) !=
-      substring(toupper(sub("File$", "", class(con))), 1, nchar(format)))
-    stop("Cannot treat a '", class(con), "' as format '", format, "'")
-}
-
-connectionForResource <- function(x, open = "") {
-  resource <- decompress(x)
-  if (is.character(resource)) {
-    if (!nzchar(resource))
-      stop("path cannot be an empty string")
-    uri <- .parseURI(resource)
-    if (uri$scheme != "")
-      con <- url(resource)
-    else con <- file(resource)
-  } else con <- resource
-  if (!isOpen(con) && nzchar(open)) {
-      open(con, open)
-      con <- manage(con)
-  }
-  con
+connection <- function(manager, x, open = "") {
+  connectionForResource(manager, resource(x), open = open)
 }
 
 ## Connection management (similar to memory management)
 
-manage <- function(con) {
-  if (!is.null(attr(con, "finalizerEnv")))
-    return(con)
-  env <- new.env()
-  finalizer <- function(obj) {
-    if (exists("con", parent.env(environment()), inherits=FALSE)) {
-      close(con)
-      rm(con, inherits = TRUE)
-      TRUE
-    } else FALSE
-  }
-  env$finalizer <- finalizer
-  reg.finalizer(env, finalizer)
-  attr(con, "finalizerEnv") <- env
-  rm(env)
-  con
+manage <- function(manager, con) {
+    manager$connections <- unique(c(manager$connections, list(con)))
+    attr(con, "manager") <- manager
+    con
 }
 
-unmanage <- function(con) {
-  attr(con, "finalizerEnv") <- NULL
-  con
+managed <- function(manager, con) {
+    con %in% manager$connections
 }
 
-release <- function(con) {
-  env <- attr(con, "finalizerEnv")
-  if (!is.null(env))
-    env$finalizer()
-  else FALSE
+unmanage <- function(manager, con) {
+    manager$connections <- setdiff(manager$connections, con)
+    attr(con, "manager") <- NULL
+    con
+}
+
+release <- function(manager, con) {
+    if (managed(manager, con)) {
+        unmanage(manager, con)
+        close(con)
+    }
+    con
 }

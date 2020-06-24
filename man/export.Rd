@@ -16,6 +16,8 @@
 \alias{import,character,character,ANY-method}
 \alias{import,missing,ANY,character-method}
 
+\alias{yield}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Import and export  }
 \description{
@@ -165,7 +167,7 @@ import(con, format, text, ...)
 }
 
 \examples{
-  track <- import(system.file("tests", "v1.gff", package = "rtracklayer"))
+  \dontrun{track <- import(system.file("tests", "v1.gff", package = "rtracklayer"))}
   \dontrun{export(track, "my.gff", version = "3")}
   ## equivalently,
   \dontrun{export(track, "my.gff3")}
@@ -175,7 +177,7 @@ import(con, format, text, ...)
   export(track, con, "gff3")
   }
   ## or as a string
-  export(track, format = "gff3")
+  \dontrun{export(track, format = "gff3")}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -100,7 +100,7 @@ setMethod("import", "CSVFile",
     read.csv(resource(con), ...)
 })
 
-setMethod("export", "data.frame", "CSVFile",
+setMethod("export", c("data.frame", "CSVFile"),
     function(object, con, format, ...)
 {
     write.csv(object, resource(con), ...)

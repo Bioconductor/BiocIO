@@ -1,3 +1,4 @@
+
 ### =========================================================================
 ### Compression
 ### -------------------------------------------------------------------------
@@ -6,53 +7,66 @@
 ### General
 ###
 
+#' @export
 setClass("CompressedFile", contains = c("BiocFile", "VIRTUAL"))
 
+#' @export
 setGeneric("decompress",
-           function(con, ...) standardGeneric("decompress"))
+    function(manager, con, ...) standardGeneric("decompress"),
+    signature="con")
 
-setMethod("decompress", "ANY", function(con, ...) con)
+#' @export
+setMethod("decompress", "ANY", function(manager, con, ...) con)
 
-setMethod("decompress", "CompressedFile", function(con, ...) {
-  resource <- resource(con)
-  if (is.character(resource))
-    manage(gzfile(resource)) # handles gzip, bzip2 and xz
-  else stop("Cannot decompress connection")
+#' @export
+setMethod("decompress", "CompressedFile", function(manager, con, ...) {
+    resource <- resource(con)
+    if (is.character(resource))
+    manage(manager, gzfile(resource)) # handles gzip, bzip2 and xz
+    else stop("Cannot decompress connection")
 })
 
+#' @export
 setMethod("decompress", "character",
-          function(con, ...) {
-            file <- try(FileForFormat(con), silent = TRUE)
-            if (!is(file, "try-error")) {
-              decompressed <- decompress(file)
-              if (!identical(file, decompressed))
-                con <- decompressed
-            }
-            con
-          })
+    function(manager, con, ...) {
+        file <- try(FileForFormat(con), silent = TRUE)
+        if (!is(file, "try-error")) {
+            decompressed <- decompress(manager, file)
+            if (!identical(file, decompressed))
+            con <- decompressed
+        }
+        con
+})
+
+#' @export
+setMethod("fileFormat", "CompressedFile",
+    function(x) {
+        file_ext(file_path_sans_ext(resourceDescription(x)))
+})
 
 ## should only happen internally (user would not give compression as format)
+#' @export
 setMethod("import", c("CompressedFile", "missing"),
-          function(con, format, text, ...)
-          {
-            desc <- resourceDescription(con)
-            con <- FileForFormat(resource(con),
-                                 file_ext(file_path_sans_ext(desc)))
-            import(con, ...)
-          })
+    function(con, format, text, ...)
+{
+    con <- FileForFormat(resource(con), fileFormat(con))
+    import(con, ...)
+})
 
 ## 'compress' is a simple alias for 'decompress', since connections are two-way
+#' @export
 compress <- decompress
 
 ## should only happen internally (user would not give compression as format)
+#' @export
 setMethod("export", c("ANY", "CompressedFile", "missing"),
-          function(object, con, format, ...)
-          {
-            desc <- resourceDescription(con)
-            con <- FileForFormat(resource(con),
-                                 file_ext(file_path_sans_ext(desc)))
-            export(object, con, ...)
-          })
+    function(object, con, format, ...)
+{
+    desc <- resourceDescription(con)
+    con <- FileForFormat(resource(con),
+    file_ext(file_path_sans_ext(desc)))
+    export(object, con, ...)
+})
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ### GZip
@@ -61,25 +75,26 @@ setMethod("export", c("ANY", "CompressedFile", "missing"),
 setClass("GZFile", contains = "CompressedFile")
 
 GZFile <- function(resource) {
-  new("GZFile", resource = resource)
+    new("GZFile", resource = resource)
 }
 
-setMethod("decompress", "GZFile", function(con) {
-  ungzip(resource(con))
+setMethod("decompress", "GZFile", function(manager, con) {
+    ungzip(manager, resource(con))
 })
 
-setGeneric("ungzip", function(x, ...) standardGeneric("ungzip"))
+setGeneric("ungzip", function(manager, x, ...) standardGeneric("ungzip"),
+    signature="x")
 
-setMethod("ungzip", "character", function(x) {
-  uri <- .parseURI(x)
-  if (uri$scheme != "" && uri$scheme != "file")
+setMethod("ungzip", "character", function(manager, x) {
+    uri <- .parseURI(x)
+    if (uri$scheme != "" && uri$scheme != "file")
     con <- gzcon(url(x, open="rb"), text=TRUE)
-  else con <- gzfile(uri$path)
-  manage(con)
+    else con <- gzfile(uri$path)
+    manage(manager, con)
 })
 
 setMethod("ungzip", "connection", function(x) {
-  gzcon(x, text=TRUE)
+    gzcon(x, text=TRUE)
 })
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -89,7 +104,7 @@ setMethod("ungzip", "connection", function(x) {
 setClass("BGZFile", contains = "GZFile")
 
 BGZFile <- function(resource) {
-  new("BGZFile", resource = resource)
+    new("BGZFile", resource = resource)
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -99,7 +114,7 @@ BGZFile <- function(resource) {
 setClass("BZ2File", contains = "CompressedFile")
 
 BZ2File <- function(resource) {
-  new("BZ2File", resource = resource)
+    new("BZ2File", resource = resource)
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -109,5 +124,5 @@ BZ2File <- function(resource) {
 setClass("XZFile", contains = "CompressedFile")
 
 XZFile <- function(resource) {
-  new("XZFile", resource = resource)
+    new("XZFile", resource = resource)
 }

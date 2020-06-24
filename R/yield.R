@@ -1,3 +1,4 @@
+#' @export
 setGeneric(
     "yield",
     function(con, format, text, size, ...)

@@ -12,16 +12,30 @@
 \alias{path}
 \alias{path,BiocFile-method}
 \alias{resource}
+\alias{resource<-}
 \alias{fileFormat}
 \alias{fileFormat,BiocFile-method}
 \alias{fileFormat,CompressedFile-method}
 \alias{fileFormat,character-method}
+
+%% Consturctors
+\alias{BiocFileList}
 
 %% Show:
 \alias{show,BiocFile-method}
 
 %% Related functions:
 \alias{FileForFormat}
+\alias{bestFileFormat}
+\alias{bestFileFormat,GRangesList-method}
+\alias{bestFileFormat,GenomicRanges-method}
+\alias{bestFileFormat,IntegerRangesList-method}
+\alias{bestFileFormat,RleList-method}
+\alias{decompress}
+\alias{decompress,ANY-method}
+\alias{decompress,CompressedFile-method}
+\alias{decompress,GZFile-method}
+\alias{decompress,character-method}
 
 %% Coerce:
 \alias{as.character,BiocFile-method}
