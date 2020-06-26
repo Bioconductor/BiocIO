@@ -167,17 +167,63 @@ import(con, format, text, ...)
 }
 
 \examples{
-  \dontrun{track <- import(system.file("tests", "v1.gff", package = "rtracklayer"))}
-  \dontrun{export(track, "my.gff", version = "3")}
-  ## equivalently,
-  \dontrun{export(track, "my.gff3")}
-  ## or
-  \dontrun{
-  con <- file("my.gff3")
-  export(track, con, "gff3")
+  ## To illustrate export(), import(), and yeild(), we create a class, CSVFILE
+  .CSVFile <- setClass("CSVFile", contains = "BiocFile")
+
+  ## Constructor
+  CSVFile <-
+      function(resource)
+  {
+      .CSVFile(resource = resource)
   }
-  ## or as a string
-  \dontrun{export(track, format = "gff3")}
+
+  ## Define import
+  setMethod("import", "CSVFile",
+      function(con, format, text, ...)
+  {
+      read.csv(resource(con), ...)
+  })
+
+  ## Define export
+  setMethod("export", c("data.frame", "CSVFile"),
+      function(object, con, format, ...)
+  {
+      write.csv(object, resource(con), ...)
+  })
+
+  ## Define yield
+  setMethod("yield", "CSVFile",
+      function(con, format, text, size = -1, ...)
+  {
+      con <- resource(con)
+      if (!is(con, "connection"))
+          con <- file(con)
+      if (!identical("opened", summary(con)$opened))
+          tryCatch({
+              open(con, "rt")
+          }, error = function(e) {
+              cond <- simpleCondition(e)
+              class(cond) <- c("File not found", class(cond))
+              signalCondition(cond)
+          })
+      tryCatch({
+          read.csv(con, nrows = size, ...)
+      }, error = function(e) {
+          cond <- simpleCondition(e)
+          class(cond) <- c("EOF", class(cond))
+          signalCondition(cond)
+      })
+  })
+
+  ## Usage
+  temp <- tempfile(fileext = ".csv")
+  csv <- CSVFile(temp)
+
+  export(mtcars, csv)
+  df <- import(csv)
+
+  yield(csv)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
