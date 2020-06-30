@@ -58,7 +58,7 @@ setMethod("fileFormat", "BiocFile", function(x)
     tolower(sub("File$", "", class(x))))
 
 #' @export
-setMethod("path", "BiocFile", function(object) {
+setMethod("path", "BiocFile", function(object, ...) {
   r <- resource(object)
   if (!is.character(r))
     stop("Connection resource requested as a path")
