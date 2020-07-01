@@ -3,6 +3,7 @@ Title: Standard Input and Output for Bioconductor Packages
 Version: 0.0.7
 Authors@R: c(
     person("Martin", "Morgan", role = "aut", comment = c(ORCID = "YOUR-ORCID-ID")),
+    person("Michael", "Lawrence", role = "aut"),
     person("Daniel", "Van Twisk", role = "aut"),
     person(
         family = "Bioconductor Package Maintainer",
@@ -34,7 +35,6 @@ Imports:
     IRanges,
     RCurl,
     S4Vectors,
-    XML,
     methods,
     tools
 Suggests: 

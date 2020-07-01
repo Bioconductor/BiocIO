@@ -16,7 +16,6 @@
 #' @importFrom IRanges RleList RangesList
 #' @importFrom RCurl getURL
 #' @importFrom S4Vectors SimpleList isSingleString
-#' @importFrom XML parseURI
 #' @importFrom methods findMethods getClass getClassDef is new packageSlot show
 #' @importFrom tools file_ext file_path_as_absolute file_path_sans_ext
 #' @export
@@ -59,57 +58,57 @@ setMethod("fileFormat", "BiocFile", function(x)
 
 #' @export
 setMethod("path", "BiocFile", function(object, ...) {
-  r <- resource(object)
-  if (!is.character(r))
-    stop("Connection resource requested as a path")
-  r
+    r <- resource(object)
+    if (!is.character(r))
+      stop("Connection resource requested as a path")
+    r
 })
 
 #' @export
 setMethod("show", "BiocFile", function(object) {
-  r <- resource(object)
-  if (!isSingleString(r))
-    r <- summary(r)$description
-  cat(class(object), "object\nresource:", r, "\n")
+    r <- resource(object)
+    if (!isSingleString(r))
+        r <- summary(r)$description
+    cat(class(object), "object\nresource:", r, "\n")
 })
 
 #' @export
 FileForFormat <- function(path, format = file_ext(path)) {
-  if (!(isSingleString(path) || is(path, "connection")))
-    stop("'path' must be a single string or a connection object")
-  if (!isSingleString(format))
-    stop("'format' must be a single string")
-  if (format == "")
-    stop("Cannot detect format (no extension found in file name)")
-  fileClassName <- paste0(format, "File")
-  signatureClasses <- function(fun, pos) {
-    matrix(unlist(findMethods(fun)@signatures), 3)[pos,]
-  }
-  fileClassNames <- unique(c(signatureClasses(export, 2),
-                             signatureClasses(import, 1)))
-  fileClassNames <- fileClassNames[grepl("File$", fileClassNames)]
-  fileSubClassNames <- unlist(lapply(fileClassNames, function(x) {
-    names(getClassDef(x)@subclasses)
-  }), use.names = FALSE)
-  fileClassNames <- c(fileClassNames, fileSubClassNames) 
-  fileClassIndex <- match(tolower(fileClassName),
-                          tolower(fileClassNames))
-  if (is.na(fileClassIndex))
-    stop("Format '", format, "' unsupported")
-  fileClassName <- fileClassNames[fileClassIndex]
-  fileClass <- getClass(fileClassName)
-  pkg <- packageSlot(fileClass)
-  if (is.null(pkg) || identical(pkg, ".GlobalEnv"))
-    ns <- topenv()
-  else ns <- getNamespace(pkg[1])
-  constructorName <- fileClassName
-  if(!exists(constructorName, ns)) {
-    parentClassNames <- names(getClass(constructorName)@contains)
-    constructorName <- names(which(sapply(parentClassNames, exists, ns)))[1]
-    if (is.na(constructorName))
-      stop("No constructor found for ", fileClassName)
-  }
-  get(constructorName, ns)(path)
+    if (!(isSingleString(path) || is(path, "connection")))
+        stop("'path' must be a single string or a connection object")
+    if (!isSingleString(format))
+        stop("'format' must be a single string")
+    if (format == "")
+        stop("Cannot detect format (no extension found in file name)")
+    fileClassName <- paste0(format, "File")
+    signatureClasses <- function(fun, pos) {
+        matrix(unlist(findMethods(fun)@signatures), 3)[pos,]
+    }
+    fileClassNames <- unique(c(signatureClasses(export, 2),
+                               signatureClasses(import, 1)))
+    fileClassNames <- fileClassNames[grepl("File$", fileClassNames)]
+    fileSubClassNames <- unlist(lapply(fileClassNames, function(x) {
+        names(getClassDef(x)@subclasses)
+    }), use.names = FALSE)
+    fileClassNames <- c(fileClassNames, fileSubClassNames) 
+    fileClassIndex <- match(tolower(fileClassName),
+                            tolower(fileClassNames))
+    if (is.na(fileClassIndex))
+        stop("Format '", format, "' unsupported")
+    fileClassName <- fileClassNames[fileClassIndex]
+    fileClass <- getClass(fileClassName)
+    pkg <- packageSlot(fileClass)
+    if (is.null(pkg) || identical(pkg, ".GlobalEnv"))
+        ns <- topenv()
+    else ns <- getNamespace(pkg[1])
+    constructorName <- fileClassName
+    if(!exists(constructorName, ns)) {
+        parentClassNames <- names(getClass(constructorName)@contains)
+        constructorName <- names(which(sapply(parentClassNames, exists, ns)))[1]
+        if (is.na(constructorName))
+            stop("No constructor found for ", fileClassName)
+     }
+    get(constructorName, ns)(path)
 }
 
 #' @export
@@ -156,22 +155,25 @@ isURL <- function(uri) {
 }
 
 .parseURI <- function(uri) {
-  if (!isURL(uri)) {
-    parsed <- parseURI("")
-    parsed$path <- uri
-  } else {
-    parsed <- parseURI(uri)
-    if (parsed$scheme == "file" && .Platform$OS.type == "windows") 
-      parsed$path <- substring(parsed$path, 2) # trim '/' from '/C:/foo/bar.txt'
+    if (!isURL(uri)) {
+        list(scheme = "", path = uri)
+    } else {
+        parsed <- list(scheme = "", path = uri)
+        if (any(startsWith(uri, c("http", "ftp"))))
+            parsed$scheme <- "con"
+        else
+            parsed$scheme <- "file"
+        if (parsed$scheme == "file" && .Platform$OS.type == "windows") 
+            parsed$path <- substring(parsed$path, 2) # trim '/' from '/C:/foo/bar.txt'
   }
   parsed
 }
 
 resourceDescription <- function(x) {
-  r <- resource(x)
-  if (is(r, "connection"))
-    r <- summary(r)$description
-  r
+    r <- resource(x)
+    if (is(r, "connection"))
+        r <- summary(r)$description
+    r
 }
 
 .ConnectionManager <- setRefClass("ConnectionManager",
@@ -180,7 +182,7 @@ resourceDescription <- function(x) {
 manager <- function() .ConnectionManager()
 
 connection <- function(manager, x, open = "") {
-  connectionForResource(manager, resource(x), open = open)
+    connectionForResource(manager, resource(x), open = open)
 }
 
 ## Connection management (similar to memory management)
