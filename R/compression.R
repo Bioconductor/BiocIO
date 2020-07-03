@@ -33,7 +33,7 @@ setMethod("decompress", "character",
         if (!is(file, "try-error")) {
             decompressed <- decompress(manager, file)
             if (!identical(file, decompressed))
-            con <- decompressed
+                con <- decompressed
         }
         con
 })

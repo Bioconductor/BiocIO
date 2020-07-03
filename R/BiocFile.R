@@ -131,8 +131,17 @@ isURL <- function(uri) {
         parsed <- list(scheme = "", path = uri)
     } else {
         parsed <- list(scheme = "", path = uri)
-        if (any(startsWith(uri, c("http", "ftp"))))
-            parsed$scheme <- "con"
+        protocols <- c("file", "http", "https", "ftp", "smtp")
+        if (length(protocol <- protocols[startsWith(uri, paste0(protocols, ':'))])) {
+            parsed$scheme <- protocol
+            rem <- paste0("^", protocol, "://")
+            if (protocol %in% protocols[-1]) {
+                domain <- strsplit(gsub("http://|https://|ftp://|smtp://|www\\.", "", uri), "/")[[c(1, 1)]]
+                parsed$path <- gsub(paste0(rem, domain), "", uri)
+            }
+            else
+                parsed$path <- gsub(rem, "", uri)
+        }
         else
             parsed$scheme <- "file"
         if (parsed$scheme == "file" && .Platform$OS.type == "windows") 
