@@ -88,8 +88,9 @@ setGeneric("ungzip", function(manager, x, ...) standardGeneric("ungzip"),
 setMethod("ungzip", "character", function(manager, x) {
     uri <- .parseURI(x)
     if (uri$scheme != "" && uri$scheme != "file")
-    con <- gzcon(url(x, open="rb"), text=TRUE)
-    else con <- gzfile(uri$path)
+        con <- gzcon(url(x, open="rb"), text=TRUE)
+    else
+        con <- gzfile(uri$path)
     manage(manager, con)
 })
 

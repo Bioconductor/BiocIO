@@ -16,8 +16,6 @@
 \alias{import,character,character,ANY-method}
 \alias{import,missing,ANY,character-method}
 
-\alias{yield}
-
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Import and export  }
 \description{
@@ -91,39 +89,12 @@ import(con, format, text, ...)
       write.csv(object, resource(con), ...)
   })
 
-  ## Define yield
-  setMethod("yield", "CSVFile",
-      function(con, format, text, size = -1, ...)
-  {
-      con <- resource(con)
-      if (!is(con, "connection"))
-          con <- file(con)
-      if (!identical("opened", summary(con)$opened))
-          tryCatch({
-              open(con, "rt")
-          }, error = function(e) {
-              cond <- simpleCondition(e)
-              class(cond) <- c("File not found", class(cond))
-              signalCondition(cond)
-          })
-      tryCatch({
-          read.csv(con, nrows = size, ...)
-      }, error = function(e) {
-          cond <- simpleCondition(e)
-          class(cond) <- c("EOF", class(cond))
-          signalCondition(cond)
-      })
-  })
-
   ## Usage
   temp <- tempfile(fileext = ".csv")
   csv <- CSVFile(temp)
 
   export(mtcars, csv)
   df <- import(csv)
-
-  yield(csv)
-
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

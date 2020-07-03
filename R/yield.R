@@ -1,7 +1,7 @@
-#' @export
-setGeneric(
-    "yield",
-    function(con, format, text, size, ...)
-        standardGeneric("yield"),
-    signature = "con"
-)
+###' @export
+#setGeneric(
+#    "yield",
+#    function(con, format, text, size, ...)
+#        standardGeneric("yield"),
+#    signature = "con"
+#)

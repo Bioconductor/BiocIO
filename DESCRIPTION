@@ -49,3 +49,4 @@ Collate:
     BiocFile.R
     compression.R
 VignetteBuilder: knitr
+biocViews: Annotation,DataImport

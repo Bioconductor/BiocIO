@@ -43,12 +43,6 @@ getGeneric("import")
 getGeneric("export")
 ```
 
-## Yield
-
-```{r yieldGeneric}
-getGeneric("yield")
-```
-
 ## The BiocFile Class
 BiocFile is a base class for high-level file abstractions, where subclasses are
 associated with a particular file format/type. It wraps a low-level
@@ -143,36 +137,6 @@ setMethod("export", c("data.frame", "CSVFile"),
 })
 ```
 
-The yield method is meant to return only a certain amount of the File object
-using the `size` argument. The `size` argument can be anything defined as any
-means to split the object and is defined by the developer for each yield method.
-For the `CSVFile` class, it is defined as rows.
-
-```{r defineYield}
-setMethod("yield", "CSVFile",
-    function(con, format, text, size = -1, ...)
-{
-    con <- resource(con)
-    if (!is(con, "connection"))
-        con <- file(con)
-    if (!identical("opened", summary(con)$opened))
-        tryCatch({
-            open(con, "rt")
-        }, error = function(e) {
-            cond <- simpleCondition(e)
-            class(cond) <- c("File not found", class(cond))
-            signalCondition(cond)
-        })
-    tryCatch({
-        read.csv(con, nrows = size, ...)
-    }, error = function(e) {
-        cond <- simpleCondition(e)
-        class(cond) <- c("EOF", class(cond))
-        signalCondition(cond)
-    })
-})
-```
-
 And finally a demonstration of the CSVFile class and import/export methods in
 action.
 ```{r demonstrateCSV}
@@ -181,8 +145,6 @@ csv <- CSVFile(temp)
 
 export(mtcars, csv)
 df <- import(csv)
-
-yield(csv)
 ```
 
 
