@@ -92,6 +92,44 @@
   }
 }
 
+\examples{
+  ## For our examples, we create a class called CSVFILE that extends BiocFile
+  .CSVFile <- setClass("CSVFile", contains = "BiocFile")
+
+  ## Constructor
+  CSVFile <-
+      function(resource)
+  {
+      .CSVFile(resource = resource)
+  }
+
+  setMethod("import", "CSVFile",
+      function(con, format, text, ...)
+  {
+      read.csv(resource(con), ...)
+  })
+
+  ## Define export
+  setMethod("export", c("data.frame", "CSVFile"),
+      function(object, con, format, ...)
+  {
+      write.csv(object, resource(con), ...)
+  })
+
+  ## Recommend CSVFile class for .csv files
+  temp <- tempfile(fileext = ".csv")
+  FileForFormat(temp)
+
+  ## Create CSVFile
+  csv <- CSVFile(temp)
+
+  ## Display path of file
+  path(csv)
+
+  ## Display resource of file
+  resource(csv)
+}
+
 \author{Michael Lawrence}
 
 \seealso{

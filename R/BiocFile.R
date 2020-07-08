@@ -162,6 +162,23 @@ resourceDescription <- function(x) {
 
 manager <- function() .ConnectionManager()
 
+connectionForResource <- function(manager, x, open = "") {
+  resource <- decompress(manager, x)
+  if (is.character(resource)) {
+    if (!nzchar(resource))
+      stop("path cannot be an empty string")
+    uri <- .parseURI(resource)
+    if (uri$scheme != "")
+      con <- url(resource)
+    else con <- file(resource)
+  } else con <- resource
+  if (!isOpen(con) && nzchar(open)) {
+      open(con, open)
+      con <- manage(manager, con)
+  }
+  con
+}
+
 connection <- function(manager, x, open = "") {
     connectionForResource(manager, resource(x), open = open)
 }

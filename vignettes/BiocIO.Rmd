@@ -16,7 +16,7 @@ abstract: |
   vignette will describe the functionality of these base methods and classes as
   well as an example for developers on how to interface with them.
 vignette: |
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{BiocIO}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
