@@ -25,8 +25,5 @@ test_that("Test .parseURI", {
 
     uri <- 'file://C:/foo/bar.txt'
     parsed <- .parseURI(uri)
-    path <- "/C:/foo/bar.txt"
-    if (.Platform$OS.type == "windows")
-        path <- "C:/foo/bar.txt"
-    expect_equal(parsed, list(scheme = "file", path = path))
+    expect_equal(parsed, list(scheme = "file", path = "C:/foo/bar.txt"))
 })
