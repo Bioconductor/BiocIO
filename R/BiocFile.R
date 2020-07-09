@@ -146,9 +146,8 @@ isURL <- function(uri) {
             parsed$scheme <- "file"
         if (parsed$scheme == "file" && .Platform$OS.type == "windows") 
             parsed$path <- substring(parsed$path, 2) # trim '/' from '/C:/foo/bar.txt'
-  }
-  parsed$path <- gsub("\\", "/", parsed$path)
-  parsed
+    }
+    parsed
 }
 
 resourceDescription <- function(x) {
