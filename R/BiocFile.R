@@ -134,19 +134,20 @@ isURL <- function(uri) {
         protocols <- c("file", "http", "https", "ftp", "smtp")
         if (length(protocol <- protocols[startsWith(uri, paste0(protocols, ':'))])) {
             parsed$scheme <- protocol
-            rem <- paste0("^", protocol, "://")
+            rem <- paste0(protocol, "://")
             if (protocol %in% protocols[-1]) {
-                domain <- strsplit(gsub("http://|https://|ftp://|smtp://|www\\.", "", uri), "/")[[c(1, 1)]]
-                parsed$path <- gsub(paste0(rem, domain), "", uri)
+                domain <- strsplit(gsub("^[http://|https://|ftp://|smtp://|www\\.]", "", uri), "/")[[c(1, 1)]]
+                parsed$path <- sub(paste0(rem, domain), "", uri)
             }
             else
-                parsed$path <- gsub(rem, "", uri)
+                parsed$path <- sub(rem, "", uri)
         }
         else
             parsed$scheme <- "file"
         if (parsed$scheme == "file" && .Platform$OS.type == "windows") 
             parsed$path <- substring(parsed$path, 2) # trim '/' from '/C:/foo/bar.txt'
   }
+  parsed$path <- gsub("\\", "/", parsed$path)
   parsed
 }
 
