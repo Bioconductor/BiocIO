@@ -4,15 +4,11 @@ test_that("Test .parseURI", {
     expect_equal(parsed, list(scheme = "http", path = "/bar.txt"))
     
     uri <- 'file:////foo/bar.txt'
-    if(.Platform$OS.type == "windows")
-        uri <- 'file:\\\\foo\\bar.txt'
     parsed <- .parseURI(uri)
     expect_equal(parsed, list(scheme = "file", path = "//foo/bar.txt"))
 
     uri <- 'file:///foo/bar.txt'
     parsed <- .parseURI(uri)
-    if(.Platform$OS.type == "windows")
-        uri <- 'file:\\foo\\bar.txt'
     expect_equal(parsed, list(scheme = "file", path = "/foo/bar.txt"))
 
     uri <- 'https://foo.com/bar.txt'
@@ -29,7 +25,5 @@ test_that("Test .parseURI", {
 
     uri <- 'file://C:/foo/bar.txt'
     parsed <- .parseURI(uri)
-    if(.Platform$OS.type == "windows")
-        uri <- 'file:\\C:\\foo\\bar.txt'
     expect_equal(parsed, list(scheme = "file", path = "/C:/foo/bar.txt"))
 })
