@@ -136,7 +136,7 @@ isURL <- function(uri) {
             parsed$scheme <- protocol
             rem <- paste0(protocol, "://")
             if (protocol %in% protocols[-1]) {
-                domain <- strsplit(gsub("^[http://|https://|ftp://|smtp://|www\\.]", "", uri), "/")[[c(1, 1)]]
+                domain <- strsplit(gsub("http://|https://|ftp://|smtp://|www\\.", "", uri), "/")[[c(1, 1)]]
                 parsed$path <- sub(paste0(rem, domain), "", uri)
             }
             else

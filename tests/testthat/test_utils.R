@@ -5,12 +5,10 @@ test_that("Test .parseURI", {
     
     uri <- 'file:////foo/bar.txt'
     parsed <- .parseURI(uri)
-    warining(parsed)
     expect_equal(parsed, list(scheme = "file", path = "//foo/bar.txt"))
 
     uri <- 'file:///foo/bar.txt'
     parsed <- .parseURI(uri)
-    warining(parsed)
     expect_equal(parsed, list(scheme = "file", path = "/foo/bar.txt"))
 
     uri <- 'https://foo.com/bar.txt'
@@ -27,6 +25,5 @@ test_that("Test .parseURI", {
 
     uri <- 'file:///C:/foo/bar.txt'
     parsed <- .parseURI(uri)
-    warining(parsed)
     expect_equal(parsed, list(scheme = "file", path = "/C:/foo/bar.txt"))
 })

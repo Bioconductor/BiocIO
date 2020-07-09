@@ -1,6 +1,6 @@
 Package: BiocIO
 Title: Standard Input and Output for Bioconductor Packages
-Version: 0.99.4
+Version: 0.99.5
 Authors@R: c(
     person("Martin", "Morgan", role = "aut", comment = c(ORCID = "YOUR-ORCID-ID")),
     person("Michael", "Lawrence", role = "aut"),
