@@ -23,14 +23,16 @@ vignette: |
 
 # Introduction
 
+The `BiocIO` package is primarily to be used by developers for interfacing with
+the abstract classes and generics in this package to devlop their own related
+classes and methods. 
+
 # Installation
 ```{r installation, eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("BiocIO")
 ```
-
-# Introduction
 ```{r library}
 library("BiocIO")
 ```

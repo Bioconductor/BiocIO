@@ -89,6 +89,15 @@
       a high-level file object such as BamFile, BEDFile,
       BigWigFile etc.. 
     }
+    \item{}{
+      \code{bestFileFormat(x)}: Returns the best possible file format for a
+      given file. This function searches through loaded packages for "File"
+      classes that contain S4 methods for `export` and `import` for that class.
+    }
+    \item{}{
+      \code{decompress(x)}: Returns a decompressed representation of a
+      \code{CompressedFile} or \code{character} object.
+    }
   }
 }
 

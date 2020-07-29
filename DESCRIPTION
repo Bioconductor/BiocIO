@@ -1,8 +1,8 @@
 Package: BiocIO
 Title: Standard Input and Output for Bioconductor Packages
-Version: 0.99.9
+Version: 0.99.10
 Authors@R: c(
-    person("Martin", "Morgan", role = "aut", comment = c(ORCID = "YOUR-ORCID-ID")),
+    person("Martin", "Morgan", role = "aut"),
     person("Michael", "Lawrence", role = "aut"),
     person("Daniel", "Van Twisk", role = "aut"),
     person(
@@ -50,3 +50,4 @@ Collate:
     compression.R
 VignetteBuilder: knitr
 biocViews: Annotation,DataImport
+BugReports: https://github.com/Bioconductor/BiocIO/issues
