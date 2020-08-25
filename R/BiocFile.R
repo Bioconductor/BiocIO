@@ -104,7 +104,8 @@ FileForFormat <- function(path, format = file_ext(path)) {
     constructorName <- fileClassName
     if(!exists(constructorName, ns)) {
         parentClassNames <- names(getClass(constructorName)@contains)
-        constructorName <- names(which(sapply(parentClassNames, exists, ns)))[1]
+        constructorName <- names(which(vapply(parentClassNames,
+             exists, logical(1), ns)))[1]
         if (is.na(constructorName))
             stop("No constructor found for ", fileClassName)
      }
