@@ -1,6 +1,6 @@
 Package: BiocIO
 Title: Standard Input and Output for Bioconductor Packages
-Version: 0.99.11
+Version: 1.0.0
 Authors@R: c(
     person("Martin", "Morgan", role = "aut"),
     person("Michael", "Lawrence", role = "aut"),
