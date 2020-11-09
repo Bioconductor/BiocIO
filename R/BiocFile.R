@@ -12,8 +12,7 @@
 ### path/URL or connection.
 
 #' @importFrom BiocGenerics path
-#' @importFrom GenomicRanges GRanges GRangesList score strand
-#' @importFrom IRanges RleList RangesList
+#' @importFrom GenomicRanges GRanges score strand
 #' @importFrom RCurl getURL
 #' @importFrom S4Vectors SimpleList isSingleString
 #' @importFrom methods findMethods getClass getClassDef is new packageSlot show

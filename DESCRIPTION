@@ -32,7 +32,6 @@ Depends:
 Imports:
     BiocGenerics,
     GenomicRanges,
-    IRanges,
     RCurl,
     S4Vectors,
     methods,
