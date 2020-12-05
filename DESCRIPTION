@@ -1,6 +1,6 @@
 Package: BiocIO
 Title: Standard Input and Output for Bioconductor Packages
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: c(
     person("Martin", "Morgan", role = "aut"),
     person("Michael", "Lawrence", role = "aut"),
@@ -26,13 +26,11 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Depends:
     R (>= 4.0)
 Imports:
     BiocGenerics,
-    GenomicRanges,
-    RCurl,
     S4Vectors,
     methods,
     tools
@@ -44,7 +42,6 @@ Suggests:
 Collate:
     export.R
     import.R
-    yield.R
     BiocFile.R
     compression.R
 VignetteBuilder: knitr
