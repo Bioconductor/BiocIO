@@ -1,5 +1,5 @@
 ---
-title: "Vignette Title"
+title: "An Overview of the BiocIO package"
 author:
 - name: Daniel Van Twisk
   affiliation: Roswell Park Comprehensive Cancer Center
@@ -24,7 +24,7 @@ vignette: |
 # Introduction
 
 The `BiocIO` package is primarily to be used by developers for interfacing with
-the abstract classes and generics in this package to devlop their own related
+the abstract classes and generics in this package to develop their own related
 classes and methods. 
 
 # Installation
@@ -54,7 +54,7 @@ representation of a file, currently either a path/URL or connection.
 
 CompressedFile is a base class that extends the BiocFile class that offers
 high-level file abstractions for compressed file formats. As with the BiocFile
-class, it takes either a path/URL of connection as an arguement. This package
+class, it takes either a path/URL of connection as an argument. This package
 also includes other File classes that extend CompressedFile including: BZ2File,
 XZFile, GZFile, and BGZFile which extends the GZfile class
 
@@ -80,7 +80,7 @@ LoomFile(file)
 ```
 
 The first warning indicates the the `RTLFile` class from `rtracklayer` is
-being depricated in future releases. The second waning indicates that the
+being deprecated in future releases. The second waning indicates that the
 `resource` method from `rtracklayer` has also been moved to `BiocIO`.
 
 To resolve this issue, simply replace the `contains="RTLFile"` argument in
@@ -97,7 +97,7 @@ setClass('LoomFile', contains='BiocFile')
 ## Creating classes and methods that extend BiocFile's class and methods
 
 The primary purpose of this package is to provide high-level classes and
-generics to facilitate file IO within the Biocondcutor package suite. The
+generics to facilitate file IO within the Bioconductor package suite. The
 remainder of this vignette will detail how to create File classes that extend
 the BiocFile class and create methods for these classes. This section will also
 detail using the filter and select methods from the tidyverse dplyr package to
