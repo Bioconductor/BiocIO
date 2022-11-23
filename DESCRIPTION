@@ -5,10 +5,8 @@ Authors@R: c(
     person("Martin", "Morgan", role = "aut"),
     person("Michael", "Lawrence", role = "aut"),
     person("Daniel", "Van Twisk", role = "aut"),
-    person(
-        family = "Bioconductor Package Maintainer",
-        role = "cre",
-        email = "maintainer@bioconductor.org"
+    person("Marcel", "Ramos", , "marcel.ramos@roswellpark.org",
+        "cre", c(ORCID = "0000-0002-3242-0582")
     ))
 Description: The `BiocIO` package contains high-level abstract classes
     and generics used by developers to build IO funcionality within the
