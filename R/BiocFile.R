@@ -1,10 +1,6 @@
-### =========================================================================
-### Import/export support
-### -------------------------------------------------------------------------
+# Import/export support ---------------------------------------------------
 
-### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-### Classes files and connections
-###
+# Classes files and connections -------------------------------------------
 
 ### BiocFile is a base class for high-level file abstractions, where
 ### subclasses are associated with a particular file format/type. It
@@ -87,7 +83,7 @@ FileForFormat <- function(path, format = file_ext(path)) {
     fileSubClassNames <- unlist(lapply(fileClassNames, function(x) {
         names(getClassDef(x)@subclasses)
     }), use.names = FALSE)
-    fileClassNames <- c(fileClassNames, fileSubClassNames) 
+    fileClassNames <- c(fileClassNames, fileSubClassNames)
     fileClassIndex <- match(tolower(fileClassName),
                             tolower(fileClassNames))
     if (is.na(fileClassIndex))
@@ -112,9 +108,7 @@ FileForFormat <- function(path, format = file_ext(path)) {
 #' @export
 setMethod("as.character", "BiocFile", function(x) path(x))
 
-### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-### Utilities
-###
+# Utilities ---------------------------------------------------------------
 
 isURL <- function(uri) {
     if (!isSingleString(uri))
@@ -142,7 +136,7 @@ isURL <- function(uri) {
         }
         else
             parsed$scheme <- "file"
-        #if (parsed$scheme == "file" && .Platform$OS.type == "windows") 
+        #if (parsed$scheme == "file" && .Platform$OS.type == "windows")
             #parsed$path <- substring(parsed$path, 2) # trim '/' from '/C:/foo/bar.txt'
     }
     parsed
@@ -181,7 +175,7 @@ connection <- function(manager, x, open = "") {
     connectionForResource(manager, resource(x), open = open)
 }
 
-## Connection management (similar to memory management)
+# Connection management (similar to memory management) --------------------
 
 manage <- function(manager, con) {
     manager$connections <- unique(c(manager$connections, list(con)))
