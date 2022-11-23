@@ -52,20 +52,18 @@
 \section{Accessor Methods}{
   In the code snippets below, \code{x} represents a \code{BiocFile}
   object.
-  
+
   \describe{
-    \item{}{
-      \code{path(x)}:
+    \item{\code{path(x)}}{
       Gets the path, as a \code{character} vector, to the resource
       represented by the \code{BiocFile} object, if possible.
     }
-    \item{}{
-      \code{resource(x)}:
+    \item{\code{resource(x)}}{
       Gets the low-level resource, either a character vector (a path or
       URL) or a connection.
     }
-    \item{}{
-      \code{fileFormat(x)}: Gets a string identifying the file
+    \item{\code{fileFormat(x)}}{
+      Gets a string identifying the file
       format. Can also be called directly on a character file path, in
       which case it uses a heuristic based on the file extension.
     }
@@ -74,8 +72,7 @@
 
 \section{Coercion}{
   \describe{
-    \item{}{
-      \code{as.character(x)}:
+    \item{\code{as.character(x)}}{
       Returns the path of the file as a character vector.
     }
   }
@@ -83,19 +80,18 @@
 
 \section{Related functions}{
   \describe{
-    \item{}{
-      \code{FileForFormat(path, format = file_ext(path))}:
+    \item{\code{FileForFormat(path, format = file_ext(path))}}{
       Determines the file type of \code{path} and returns
       a high-level file object such as BamFile, BEDFile,
-      BigWigFile etc.. 
+      BigWigFile etc..
     }
-    \item{}{
-      \code{bestFileFormat(x)}: Returns the best possible file format for a
+    \item{\code{bestFileFormat(x)}}{
+      Returns the best possible file format for a
       given file. This function searches through loaded packages for "File"
       classes that contain S4 methods for `export` and `import` for that class.
     }
-    \item{}{
-      \code{decompress(x)}: Returns a decompressed representation of a
+    \item{\code{decompress(x)}}{
+      Returns a decompressed representation of a
       \code{CompressedFile} or \code{character} object.
     }
   }
