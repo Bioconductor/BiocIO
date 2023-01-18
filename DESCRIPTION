@@ -25,9 +25,9 @@ Description: The `BiocIO` package contains high-level abstract classes
 License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Depends:
-    R (>= 4.0)
+    R (>= 4.3.0)
 Imports:
     BiocGenerics,
     S4Vectors,
@@ -39,10 +39,10 @@ Suggests:
     rmarkdown,
     BiocStyle
 Collate:
-    export.R
-    import.R
-    BiocFile.R
-    compression.R
+    'BiocFile.R'
+    'import_export.R'
+    'compression.R'
+    'utils.R'
 VignetteBuilder: knitr
 biocViews: Annotation,DataImport
 BugReports: https://github.com/Bioconductor/BiocIO/issues
