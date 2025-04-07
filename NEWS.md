@@ -1,3 +1,13 @@
+# BiocIO 1.16.0
+
+## Significant user-visible changes
+
+* Add package anchors to links in documentation
+
+## Bug fixes and minor improvements
+
+* Use markdown for links and lists throughout the documentation
+
 # BiocIO 1.14.0
 
 * No significant changes.
