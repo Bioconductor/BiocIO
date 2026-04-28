@@ -9,28 +9,15 @@ isURL <- function(uri) {
 }
 
 .parseURI <- function(uri) {
-    if (!isURL(uri)) {
-        parsed <- list(scheme = "", path = uri)
-    } else {
-        parsed <- list(scheme = "", path = uri)
-        protocols <- c("file", "http", "https", "ftp", "smtp")
-        protocol <- protocols[startsWith(uri, paste0(protocols, ':'))]
-        if (length(protocol)) {
-            parsed$scheme <- protocol
-            rem <- paste0(protocol, "://")
-            if (protocol %in% protocols[-1]) {
-                domain <- strsplit(
-                    gsub("http://|https://|ftp://|smtp://|www\\.", "", uri), "/"
-                )[[c(1, 1)]]
-                parsed$path <- sub(paste0(rem, domain), "", uri)
-            }
-            else
-                parsed$path <- sub(rem, "", uri)
-        } else {
-            parsed$scheme <- "file"
-        }
-    }
-    parsed
+    if (!isURL(uri))
+        return(list(scheme = "", path = uri))
+
+    m <- regmatches(uri, regexec("^([A-Za-z]+)://([^/]*)(.*)", uri))[[1L]]
+
+    if (identical(length(m), 4L))
+        return(list(scheme = m[2L], host = m[3L], path = m[4L]))
+
+    list(scheme = "", path = uri)
 }
 
 resourceDescription <- function(x) {
