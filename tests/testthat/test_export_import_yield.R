@@ -9,14 +9,14 @@ test_that("export_import", {
   }
 
   ## Define import
-  setMethod("import", "CSVFile",
+  setMethod("import", c(con = "CSVFile"),
       function(con, format, text, ...)
   {
       read.csv(resource(con), ...)
   })
 
   ## Define export
-  setMethod("export", c("data.frame", "CSVFile"),
+  setMethod("export", c(object = "data.frame", con = "CSVFile"),
       function(object, con, format, ...)
   {
       write.csv(object, resource(con), ...)

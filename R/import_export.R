@@ -57,14 +57,14 @@
 #' }
 #'
 #' ## Define import
-#' setMethod("import", "CSVFile",
+#' setMethod("import", c(con = "CSVFile"),
 #'     function(con, format, text, ...) {
 #'         read.csv(resource(con), ...)
 #'     }
 #' )
 #'
 #' ## Define export
-#' setMethod("export", c("data.frame", "CSVFile"),
+#' setMethod("export", c(object = "data.frame", con = "CSVFile"),
 #'     function(object, con, format, ...) {
 #'         write.csv(object, resource(con), ...)
 #'     }
@@ -89,7 +89,7 @@ setGeneric(
 
 #' @rdname IO
 #' @export
-setMethod("import", c("connection", "character"),
+setMethod("import", c(con = "connection", format = "character", text = "ANY"),
     function(con, format, text, ...) {
         import(FileForFormat(con, format), ...)
     }
@@ -97,7 +97,7 @@ setMethod("import", c("connection", "character"),
 
 #' @rdname IO
 #' @export
-setMethod("import", c("connection", "missing"),
+setMethod("import", c(con = "connection", format = "missing", text = "ANY"),
     function(con, format, text, ...) {
         format <- file_ext(summary(con)$description)
         import(con, format, ...)
@@ -106,7 +106,7 @@ setMethod("import", c("connection", "missing"),
 
 #' @rdname IO
 #' @export
-setMethod("import", c("character", "missing"),
+setMethod("import", c(con = "character", format = "missing", text = "ANY"),
     function(con, format, text, ...) {
         import(FileForFormat(con), ...)
     }
@@ -114,7 +114,7 @@ setMethod("import", c("character", "missing"),
 
 #' @rdname IO
 #' @export
-setMethod("import", c("character", "character"),
+setMethod("import", c(con = "character", format = "character", text = "ANY"),
     function(con, format, text, ...) {
         import(FileForFormat(con, format), ...)
     }
@@ -122,7 +122,7 @@ setMethod("import", c("character", "character"),
 
 #' @rdname IO
 #' @export
-setMethod("import", c(con = "missing", text = "character"),
+setMethod("import", c(con = "missing", format = "ANY", text = "character"),
     function(con, format, text, ...) {
         con <- file()
         on.exit(close(con))
@@ -142,7 +142,7 @@ setGeneric(
 
 #' @rdname IO
 #' @export
-setMethod("export", c(con = "connection", format = "character"),
+setMethod("export", c(object = "ANY", con = "connection", format = "character"),
     function(object, con, format, ...) {
         export(object, FileForFormat(con, format), ...)
     }
@@ -150,7 +150,7 @@ setMethod("export", c(con = "connection", format = "character"),
 
 #' @rdname IO
 #' @export
-setMethod("export", c(con = "connection", format = "missing"),
+setMethod("export", c(object = "ANY", con = "connection", format = "missing"),
     function(object, con, format, ...) {
         format <- file_ext(summary(con)$description)
         export(object, con, format, ...)
@@ -159,7 +159,7 @@ setMethod("export", c(con = "connection", format = "missing"),
 
 #' @rdname IO
 #' @export
-setMethod("export", c(con = "missing", format = "character"),
+setMethod("export", c(object = "ANY", con = "missing", format = "character"),
     function(object, con, format, ...) {
         con <- file()
         on.exit(close(con))
@@ -171,7 +171,7 @@ setMethod("export", c(con = "missing", format = "character"),
 
 #' @rdname IO
 #' @export
-setMethod("export", c(con = "character", format = "missing"),
+setMethod("export", c(object = "ANY", con = "character", format = "missing"),
     function(object, con, format, ...) {
         export(object, FileForFormat(con), ...)
     }
@@ -179,7 +179,7 @@ setMethod("export", c(con = "character", format = "missing"),
 
 #' @rdname IO
 #' @export
-setMethod("export", c(con = "character", format = "character"),
+setMethod("export", c(object = "ANY", con = "character", format = "character"),
     function(object, con, format, ...) {
         export(object, FileForFormat(con, format), ...)
     }

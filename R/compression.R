@@ -77,7 +77,7 @@ setMethod("fileFormat", "CompressedFile",
 ## should only happen internally (user would not give compression as format)
 #' @rdname IO
 #' @export
-setMethod("import", c("CompressedFile", "missing"),
+setMethod("import", c(con = "CompressedFile", format = "missing", text = "ANY"),
     function(con, format, text, ...) {
         con <- FileForFormat(resource(con), fileFormat(con))
         import(con, ...)
@@ -92,7 +92,7 @@ compress <- decompress
 ## should only happen internally (user would not give compression as format)
 #' @rdname IO
 #' @export
-setMethod("export", c("ANY", "CompressedFile", "missing"),
+setMethod("export", c(object = "ANY", con = "CompressedFile", format = "missing"),
     function(object, con, format, ...) {
         desc <- resourceDescription(con)
         con <- FileForFormat(resource(con),
