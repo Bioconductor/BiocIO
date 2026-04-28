@@ -1,6 +1,6 @@
 Package: BiocIO
 Title: Standard Input and Output for Bioconductor Packages
-Version: 1.23.0
+Version: 1.23.1
 Authors@R: c(
     person("Martin", "Morgan", role = "aut"),
     person("Michael", "Lawrence", role = "aut"),
@@ -47,4 +47,4 @@ Collate:
 VignetteBuilder: knitr
 biocViews: Annotation,DataImport
 BugReports: https://github.com/Bioconductor/BiocIO/issues
-Date: 2024-11-21
+Date: 2026-04-28
