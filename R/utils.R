@@ -14,8 +14,15 @@ isURL <- function(uri) {
 
     m <- regmatches(uri, regexec("^([A-Za-z]+)://([^/]*)(.*)", uri))[[1L]]
 
-    if (identical(length(m), 4L))
-        return(list(scheme = m[2L], host = m[3L], path = m[4L]))
+    if (identical(length(m), 4L)) {
+        scheme <- m[2L]
+        host <- m[3L]
+        path <- m[4L]
+        if (identical(scheme, "file"))
+            return(list(scheme = scheme, path = paste0(host, path)))
+        else
+            return(list(scheme = scheme, host = host, path = path))
+    }
 
     list(scheme = "", path = uri)
 }
