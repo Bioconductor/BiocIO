@@ -29,6 +29,7 @@ RoxygenNote: 7.3.2
 Depends:
     R (>= 4.3.0)
 Imports:
+    BiocBaseUtils,
     BiocGenerics,
     S4Vectors,
     methods,
