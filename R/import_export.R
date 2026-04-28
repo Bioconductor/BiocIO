@@ -99,7 +99,7 @@ setMethod("import", c(con = "connection", format = "character", text = "ANY"),
 #' @export
 setMethod("import", c(con = "connection", format = "missing", text = "ANY"),
     function(con, format, text, ...) {
-        format <- file_ext(summary(con)$description)
+        format <- file_ext(summary(con)[["description"]])
         import(con, format, ...)
     }
 )
@@ -152,7 +152,7 @@ setMethod("export", c(object = "ANY", con = "connection", format = "character"),
 #' @export
 setMethod("export", c(object = "ANY", con = "connection", format = "missing"),
     function(object, con, format, ...) {
-        format <- file_ext(summary(con)$description)
+        format <- file_ext(summary(con)[["description"]])
         export(object, con, format, ...)
     }
 )
