@@ -121,14 +121,21 @@ setMethod("import", c(con = "character", format = "character", text = "ANY"),
 )
 
 #' @rdname IO
+#' @importFrom BiocBaseUtils isScalarCharacter
 #' @export
 setMethod("import", c(con = "missing", format = "ANY", text = "character"),
     function(con, format, text, ...) {
+        if (missing(format))
+            stop(
+                "The 'format' argument must be specified",
+                " when importing from text."
+            )
+        else
+            stopifnot(isScalarCharacter(format))
         con <- file()
         on.exit(close(con))
         writeLines(text, con)
-        obj <- import(FileForFormat(con, format), ...)
-        obj
+        import(FileForFormat(con, format), ...)
     }
 )
 
